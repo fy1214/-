@@ -1,4 +1,6 @@
-package types
+package model
+
+import "gorm.io/gorm"
 
 // 说明：
 // 1. 所提到的「位数」均以字节长度为准
@@ -33,13 +35,16 @@ type ResponseMeta struct {
 }
 
 type TMember struct {
-	UserID   string
-	Nickname string
-	Username string
-	UserType UserType
+	gorm.Model
+	UserID         string
+	Nickname       string
+	Username       string
+	PasswordDigest string
+	UserType       UserType
 }
 
 type TCourse struct {
+	gorm.Model
 	CourseID  string
 	Name      string
 	TeacherID string

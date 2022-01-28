@@ -1,6 +1,21 @@
-package types
+package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"TrainingProgram/middleware"
+	"github.com/gin-gonic/gin"
+	"os"
+)
+
+func NewRouter() *gin.Engine {
+	r := gin.Default()
+
+	// 中间件, 顺序不能改
+	r.Use(middleware.Session(os.Getenv("SESSION_SECRET")))
+	r.Use(middleware.CurrentUser())
+
+	RegisterRouter(r)
+	return r
+}
 
 func RegisterRouter(r *gin.Engine) {
 	g := r.Group("/api/v1")

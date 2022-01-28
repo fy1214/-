@@ -1,14 +1,15 @@
-package TrainingProgram
+package main
 
 import (
-	"TrainingProgram/types"
-	"github.com/gin-gonic/gin"
+	"TrainingProgram/conf"
+	"TrainingProgram/server"
 )
 
 func main() {
-	r := gin.Default()
-	// 注册路由
-	types.RegisterRouter(r)
-	// 启动并监听端口
+	// 从配置文件读取配置
+	conf.Init()
+
+	// 装载路由
+	r := server.NewRouter()
 	r.Run(":8080")
 }
