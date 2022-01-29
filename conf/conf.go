@@ -12,6 +12,11 @@ import (
 func Init() {
 	// 从本地读取环境变量
 	godotenv.Load()
+	if os.Getenv("ACTIVE_ENV") == "DEV" {
+		godotenv.Load(".env.dev")
+	} else if os.Getenv("ACTIVE_ENV") == "PROD" {
+		godotenv.Load(".env.prod")
+	}
 
 	// 设置日志级别
 	util.BuildLogger(os.Getenv("LOG_LEVEL"))
