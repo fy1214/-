@@ -2,6 +2,7 @@ package model
 
 import (
 	"TrainingProgram/util"
+	"TrainingProgram/resource"
 	"log"
 	"os"
 	"time"
@@ -48,5 +49,10 @@ func Database(connString string) {
 	sqlDB.SetMaxOpenConns(20)
 	DB = db
 
+	//模型迁移
 	migration()
+	
+	//在成员表中创建默认的管理员账号
+	DB.Create(&resource.Member{Nickname: "JudgeAdmin", Username: "JudgeAdmin", Password: "JudgePassword2022", UserType: 1})
+
 }
