@@ -53,6 +53,13 @@ func GetAllCourse(TeacherID string) (*[]Course, ErrNo) {
 	}
 }
 
+// GetAllCourses 查询所有的课程
+func GetAllCourses() ([]Course, ErrNo) {
+	var courseList []Course
+	DB.Find(courseList)
+	return courseList, OK
+}
+
 func BindCourse(CourseID, TeacherID string) ErrNo {
 	cID, _ := strconv.Atoi(CourseID)
 	var course Course
@@ -60,7 +67,7 @@ func BindCourse(CourseID, TeacherID string) ErrNo {
 	if result.Error != nil {
 		return CourseNotExisted
 	}
-	if course.TeacherID == -1 {
+	if course.TeacherID != 0 {
 		return CourseHasBound
 	}
 	tID, _ := strconv.Atoi(TeacherID)
@@ -83,6 +90,6 @@ func UnBindCourse(CourseID, TeacherID string) ErrNo {
 	if int(course.TeacherID) != tID {
 		return CourseNotBind
 	}
-	DB.Model(&course).Update("teacher_id", -1)
+	DB.Model(&course).Update("teacher_id", 0)
 	return OK
 }

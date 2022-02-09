@@ -1,6 +1,8 @@
 package model
 
 import (
+	. "TrainingProgram/resource"
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -9,27 +11,89 @@ const (
 	PassWordCost = 12
 )
 
-func GetMember(ID interface{}) (TMember, error) {
-	var member TMember
+func GetMember(ID interface{}) (Member, error) {
+	var member Member
 	result := DB.First(&member, ID)
 	return member, result.Error
 }
 
-func LoginMember(username, password string) (TMember, error) {
-	var member TMember
+func LoginMember(username, password string) (Member, error) {
+	var member Member
 	result := DB.Where("username = ?", username).First(&member)
-	if result.Error != nil {
-		return member, result.Error
+	if result.Error != nil { // the non-exist user leads to WrongPassword
+		return Member{}, result.Error
 	}
-	err := bcrypt.CompareHashAndPassword([]byte(member.PasswordDigest), []byte(password))
-	return member, err
+	if member.Deleted { // logging in the deleted user also leads to WrongPassword
+		return Member{}, errors.New("user is deleted")
+	}
+	err := bcrypt.CompareHashAndPassword([]byte(member.Password), []byte(password))
+	if err != nil {
+		return Member{}, err
+	}
+	return member, nil
 }
 
-func (member *TMember) SetPassword(password string) error {
+func SetPassword(member *Member, password string) error {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), PassWordCost)
 	if err != nil {
 		return err
 	}
-	member.PasswordDigest = string(bytes)
+	member.Password = string(bytes)
 	return nil
+}
+
+//创建默认的管理员账户
+func createDefaultAdminAccount() (err error) {
+	member := Member{
+		Nickname: "JudgeAdmin",
+		Username: "JudgeAdmin",
+		Password: "JudgePassword2022",
+		UserType: 1,
+	}
+	err = SetPassword(&member, member.Password)
+	if err != nil {
+		return err
+	}
+	err = CreateAMember(&member)
+	return err
+}
+
+//Member增删改查
+//创建Member
+func CreateAMember(member *Member) (err error) {
+	err = DB.Create(&member).Error
+	if err != nil {
+		return err
+	}
+	return
+}
+
+//修改Member
+func UpdateAMember(member *Member, colume string, value string) {
+	DB.Model(&member).UpdateColumn(colume, value)
+	return
+}
+
+//删除Member
+func DeleteAMember(member *Member) {
+	DB.Model(&member).UpdateColumn("deleted", true)
+	return
+}
+
+//单个查询Member
+func GetAMember(id uint64) (member *Member, err error) {
+	err = DB.First(&member, id).Error
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+//批量查询Member
+func GetMemberList(limit int, offset int) (memberList []*Member, err error) {
+	err = DB.Where("deleted = ?", false).Limit(limit).Offset(offset).Find(&memberList).Error
+	if err != nil {
+		return nil, err
+	}
+	return
 }

@@ -2,7 +2,9 @@ package auth
 
 import (
 	"TrainingProgram/model"
+	"TrainingProgram/util"
 	"github.com/gin-contrib/sessions"
+	"strconv"
 )
 
 func Login(session sessions.Session, username, password string) (struct{ UserID string }, model.ErrNo) {
@@ -14,7 +16,7 @@ func Login(session sessions.Session, username, password string) (struct{ UserID 
 	session.Set("user_id", member.UserID)
 	_ = session.Save()
 
-	return struct{ UserID string }{UserID: member.UserID}, model.OK
+	return struct{ UserID string }{UserID: strconv.FormatUint(member.UserID, 10)}, model.OK
 }
 
 func WhoAmI(session sessions.Session) (model.TMember, model.ErrNo) {
@@ -24,9 +26,9 @@ func WhoAmI(session sessions.Session) (model.TMember, model.ErrNo) {
 	}
 
 	member, err := model.GetMember(uid)
-	if err != nil {
+	if err != nil || member.Deleted {
 		return model.TMember{}, model.UnknownError // user should exist
 	}
 
-	return member, model.OK
+	return util.ConvertMemberToTMember(member), model.OK
 }
