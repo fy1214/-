@@ -49,6 +49,6 @@ func RegisterRouter(r *gin.Engine) {
 		// 抢课
 		g.GET("/student/book_course_init", api.BookCourseInit)
 		g.POST("/student/book_course", api.BookCourse)
-		g.GET("/student/course")
+		g.GET("/student/course", api.GetStudentCourseRequest)
 	}
 }

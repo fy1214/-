@@ -2,6 +2,26 @@ package api
 
 import (
 	"TrainingProgram/model"
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
+
+func GetStudentCourseRequest(c *gin.Context) {
+	var request model.GetStudentCourseRequest
+	err := c.ShouldBind(&request)
+	if err != nil {
+
+	} else {
+		data, err := model.GetStudentCourse(request.StudentID)
+		c.JSON(http.StatusOK, model.GetStudentCourseResponse{
+			Code: err,
+			Data: data,
+		})
+	}
+}
+
+import (
+	"TrainingProgram/model"
 	"TrainingProgram/service/student"
 	"TrainingProgram/util"
 	"github.com/gin-gonic/gin"
