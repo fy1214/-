@@ -53,6 +53,6 @@ func Database(connString string) {
 	migration()
 	
 	//在成员表中创建默认的管理员账号
-	DB.Create(&resource.Member{Nickname: "JudgeAdmin", Username: "JudgeAdmin", Password: "JudgePassword2022", UserType: 1})
+	createDefaultAdminAccount()
 
 }
