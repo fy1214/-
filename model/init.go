@@ -2,7 +2,6 @@ package model
 
 import (
 	"TrainingProgram/util"
-	"TrainingProgram/resource"
 	"log"
 	"os"
 	"time"
