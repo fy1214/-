@@ -2,7 +2,7 @@ package auth
 
 import (
 	"TrainingProgram/model"
-	"TrainingProgram/util"
+	. "TrainingProgram/resource"
 	"github.com/gin-contrib/sessions"
 	"strconv"
 )
@@ -30,5 +30,15 @@ func WhoAmI(session sessions.Session) (model.TMember, model.ErrNo) {
 		return model.TMember{}, model.UnknownError // user should exist
 	}
 
-	return util.ConvertMemberToTMember(member), model.OK
+	return convertMemberToTMember(member), model.OK
+}
+
+func convertMemberToTMember(member Member) model.TMember {
+	return model.TMember{
+		UserID:         strconv.FormatUint(member.UserID, 10),
+		Nickname:       member.Nickname,
+		Username:       member.Username,
+		PasswordDigest: member.Password,
+		UserType:       member.UserType,
+	}
 }

@@ -1,10 +1,7 @@
 package util
 
 import (
-	"TrainingProgram/model"
-	. "TrainingProgram/resource"
 	"math/rand"
-	"strconv"
 	"time"
 )
 
@@ -21,14 +18,4 @@ func RandStringRunes(n int) string {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return string(b)
-}
-
-func ConvertMemberToTMember(member Member) model.TMember {
-	return model.TMember{
-		UserID:         strconv.FormatUint(member.UserID, 10),
-		Nickname:       member.Nickname,
-		Username:       member.Username,
-		PasswordDigest: member.Password,
-		UserType:       member.UserType,
-	}
 }
