@@ -1,7 +1,5 @@
 package model
 
-import "gorm.io/gorm"
-
 // 说明：
 // 1. 所提到的「位数」均以字节长度为准
 // 2. 所有的 ID 均为 int64（以 string 方式表现）
@@ -35,7 +33,6 @@ type ResponseMeta struct {
 }
 
 type TMember struct {
-	gorm.Model
 	UserID         string
 	Nickname       string
 	Username       string
@@ -44,7 +41,6 @@ type TMember struct {
 }
 
 type TCourse struct {
-	gorm.Model
 	CourseID  string
 	Name      string
 	TeacherID string
