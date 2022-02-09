@@ -9,7 +9,7 @@ func CreateCourse(name string, cap int) (*model.Course, model.ErrNo) {
 	course := model.Course{
 		Name:      name,
 		Cap:       cap,
-		TeacherID: -1,
+		TeacherID: 0,
 	}
 	return course.CreateCourse()
 }

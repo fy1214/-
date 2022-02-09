@@ -60,7 +60,7 @@ func BindCourse(CourseID, TeacherID string) ErrNo {
 	if result.Error != nil {
 		return CourseNotExisted
 	}
-	if course.TeacherID == -1 {
+	if course.TeacherID != 0 {
 		return CourseHasBound
 	}
 	tID, _ := strconv.Atoi(TeacherID)
@@ -83,6 +83,6 @@ func UnBindCourse(CourseID, TeacherID string) ErrNo {
 	if int(course.TeacherID) != tID {
 		return CourseNotBind
 	}
-	DB.Model(&course).Update("teacher_id", -1)
+	DB.Model(&course).Update("teacher_id", 0)
 	return OK
 }
