@@ -10,18 +10,18 @@ const (
 	PassWordCost = 12
 )
 
-func GetMember(ID interface{}) (TMember, error) {
-	var member TMember
+func GetMember(ID interface{}) (Member, error) {
+	var member Member
 	result := DB.First(&member, ID)
 	return member, result.Error
 }
 
-func (member *TMember) SetPassword(password string) error {
+func SetPassword(member *Member, password string) error {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), PassWordCost)
 	if err != nil {
 		return err
 	}
-	member.PasswordDigest = string(bytes)
+	member.Password = string(bytes)
 	return nil
 }
 
