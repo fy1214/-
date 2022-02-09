@@ -5,6 +5,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+
 const (
 	// PassWordCost 密码加密难度
 	PassWordCost = 12
@@ -23,6 +24,22 @@ func SetPassword(member *Member, password string) error {
 	}
 	member.Password = string(bytes)
 	return nil
+}
+
+//创建默认的管理员账户
+func createDefaultAdminAccount() (err error) {
+	member := Member{
+		Nickname: "JudgeAdmin",
+		Username: "JudgeAdmin",
+		Password: "JudgePassword2022",
+		UserType: 1,
+	}
+	err = SetPassword(&member, member.Password)
+	if err != nil {
+		return err
+	}
+	err = CreateAMember(&member)
+	return err
 }
 
 //Member增删改查
