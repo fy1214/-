@@ -1,3 +1,5 @@
+package resource
+
 // Member 成员数据表
 type Member struct {
 	ID       uint   `gorm:"primaryKey;autoIncrement"`          //ID 主键

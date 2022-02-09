@@ -4,6 +4,7 @@ import (
 	"TrainingProgram/model"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // CurrentUser 获取登录用户
@@ -31,8 +32,8 @@ func AuthRequired() gin.HandlerFunc {
 			}
 		}
 
-		c.JSON(200, model.LoginResponse{
-			Code: 6,
+		c.JSON(http.StatusOK, model.LoginResponse{
+			Code: model.LoginRequired,
 			Data: struct{ UserID string }{UserID: ""},
 		})
 		c.Abort()

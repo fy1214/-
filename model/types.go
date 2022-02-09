@@ -137,8 +137,8 @@ type DeleteMemberResponse struct {
 // 登录
 
 type LoginRequest struct {
-	Username string
-	Password string
+	Username string `form:"username" json:"username" xml:"username" binding:"required"`
+	Password string `form:"password" json:"password" xml:"password" binding:"required"`
 }
 
 // 登录成功后需要 Set-Cookie("camp-session", ${value})
