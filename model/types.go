@@ -1,7 +1,6 @@
 package model
 
 import (
-	"gorm.io/gorm"
 	"TrainingProgram/resource"
 )
 
@@ -38,7 +37,6 @@ type ResponseMeta struct {
 }
 
 type TMember struct {
-	gorm.Model
 	UserID         string
 	Nickname       string
 	Username       string
@@ -47,7 +45,6 @@ type TMember struct {
 }
 
 type TCourse struct {
-	gorm.Model
 	CourseID  string
 	Name      string
 	TeacherID string
