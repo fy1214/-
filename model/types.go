@@ -1,6 +1,9 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"TrainingProgram/resource"
+)
 
 // 说明：
 // 1. 所提到的「位数」均以字节长度为准
@@ -53,14 +56,6 @@ type TCourse struct {
 // -----------------------------------
 
 // 成员管理
-
-type UserType int
-
-const (
-	Admin   UserType = 1
-	Student UserType = 2
-	Teacher UserType = 3
-)
 
 // 系统内置管理员账号
 // 账号名：JudgeAdmin 密码：JudgePassword2022
