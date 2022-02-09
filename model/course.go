@@ -53,6 +53,13 @@ func GetAllCourse(TeacherID string) (*[]Course, ErrNo) {
 	}
 }
 
+// GetAllCourses 查询所有的课程
+func GetAllCourses() ([]Course, ErrNo) {
+	var courseList []Course
+	DB.Find(courseList)
+	return courseList, OK
+}
+
 func BindCourse(CourseID, TeacherID string) ErrNo {
 	cID, _ := strconv.Atoi(CourseID)
 	var course Course
