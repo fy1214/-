@@ -20,7 +20,7 @@ func GetCourse(CourseID string) (model.TCourse, model.ErrNo) {
 		return model.TCourse{}, err
 	}
 	var teacherID string
-	if course.TeacherID != -1 {
+	if course.TeacherID != 0 {
 		teacherID = strconv.Itoa(int(course.ID))
 	}
 	return model.TCourse{

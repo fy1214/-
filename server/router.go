@@ -47,7 +47,8 @@ func RegisterRouter(r *gin.Engine) {
 		g.POST("/course/schedule", api.GetScheduleCourse)
 
 		// 抢课
-		g.POST("/student/book_course")
+		g.GET("/student/book_course_init", api.BookCourseInit)
+		g.POST("/student/book_course", api.BookCourse)
 		g.GET("/student/course")
 	}
 }

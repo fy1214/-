@@ -56,7 +56,7 @@ func GetAllCourse(TeacherID string) (*[]Course, ErrNo) {
 // GetAllCourses 查询所有的课程
 func GetAllCourses() ([]Course, ErrNo) {
 	var courseList []Course
-	DB.Find(courseList)
+	DB.Find(&courseList)
 	return courseList, OK
 }
 

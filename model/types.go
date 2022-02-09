@@ -4,6 +4,8 @@ import (
 	. "TrainingProgram/resource"
 )
 
+import "gorm.io/gorm"
+
 // 说明：
 // 1. 所提到的「位数」均以字节长度为准
 // 2. 所有的 ID 均为 int64（以 string 方式表现）
@@ -48,6 +50,14 @@ type TCourse struct {
 	CourseID  string
 	Name      string
 	TeacherID string
+}
+
+// TBookCourse 抢课
+type TBookCourse struct {
+	gorm.Model
+	CourseID string
+	Capacity int // 课程容量
+	Size     int // 当前已抢数量
 }
 
 // -----------------------------------
