@@ -2,9 +2,9 @@ package model
 
 import (
 	. "TrainingProgram/resource"
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 )
-
 
 const (
 	// PassWordCost 密码加密难度
@@ -15,6 +15,22 @@ func GetMember(ID interface{}) (Member, error) {
 	var member Member
 	result := DB.First(&member, ID)
 	return member, result.Error
+}
+
+func LoginMember(username, password string) (Member, error) {
+	var member Member
+	result := DB.Where("username = ?", username).First(&member)
+	if result.Error != nil { // the non-exist user leads to WrongPassword
+		return Member{}, result.Error
+	}
+	if member.Deleted { // logging in the deleted user also leads to WrongPassword
+		return Member{}, errors.New("user is deleted")
+	}
+	err := bcrypt.CompareHashAndPassword([]byte(member.Password), []byte(password))
+	if err != nil {
+		return Member{}, err
+	}
+	return member, nil
 }
 
 func SetPassword(member *Member, password string) error {

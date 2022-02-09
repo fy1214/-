@@ -22,7 +22,7 @@ func NewRouter() *gin.Engine {
 func RegisterRouter(r *gin.Engine) {
 	g := r.Group("/api/v1")
 
-	g.POST("/auth/login")
+	g.POST("/auth/login", api.Login)
 
 	// 需要登录保护的
 	g.Use(middleware.AuthRequired())
@@ -35,8 +35,8 @@ func RegisterRouter(r *gin.Engine) {
 		g.POST("/member/delete", api.DeleteUser)
 
 		// 登录
-		g.POST("/auth/logout")
-		g.GET("/auth/whoami")
+		g.POST("/auth/logout", api.Logout)
+		g.GET("/auth/whoami", api.WhoAmI)
 
 		// 排课
 		g.POST("/course/create", api.CreateCourseRequest)
