@@ -3,7 +3,6 @@ package server
 import (
 	"TrainingProgram/api"
 	"TrainingProgram/middleware"
-	"TrainingProgram/api"
 	"github.com/gin-gonic/gin"
 	"os"
 )
