@@ -3,6 +3,7 @@ package server
 import (
 	"TrainingProgram/api"
 	"TrainingProgram/middleware"
+	"TrainingProgram/api"
 	"github.com/gin-gonic/gin"
 	"os"
 )
@@ -27,11 +28,11 @@ func RegisterRouter(r *gin.Engine) {
 	g.Use(middleware.AuthRequired())
 	{
 		// 成员管理
-		g.POST("/member/create")
-		g.GET("/member")
-		g.GET("/member/list")
-		g.POST("/member/update")
-		g.POST("/member/delete")
+		g.POST("/member/create", api.CreateUser)
+		g.GET("/member", api.GetAUser)
+		g.GET("/member/list", api.GetUserList)
+		g.POST("/member/update", api.UpdateUser)
+		g.POST("/member/delete", api.DeleteUser)
 
 		// 登录
 		g.POST("/auth/logout")

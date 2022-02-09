@@ -48,5 +48,10 @@ func Database(connString string) {
 	sqlDB.SetMaxOpenConns(20)
 	DB = db
 
+	//模型迁移
 	migration()
+	
+	//在成员表中创建默认的管理员账号
+	createDefaultAdminAccount()
+
 }
