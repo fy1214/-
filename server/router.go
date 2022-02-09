@@ -1,6 +1,7 @@
 package server
 
 import (
+	"TrainingProgram/api"
 	"TrainingProgram/middleware"
 	"github.com/gin-gonic/gin"
 	"os"
@@ -37,12 +38,12 @@ func RegisterRouter(r *gin.Engine) {
 		g.GET("/auth/whoami")
 
 		// 排课
-		g.POST("/course/create")
-		g.GET("/course/get")
+		g.POST("/course/create", api.CreateCourseRequest)
+		g.GET("/course/get", api.GetCourseRequest)
 
-		g.POST("/teacher/bind_course")
-		g.POST("/teacher/unbind_course")
-		g.GET("/teacher/get_course")
+		g.POST("/teacher/bind_course", api.BindCourseRequest)
+		g.POST("/teacher/unbind_course", api.UnBindCourseRequest)
+		g.GET("/teacher/get_course", api.GetAllCourseRequest)
 		g.POST("/course/schedule")
 
 		// 抢课
