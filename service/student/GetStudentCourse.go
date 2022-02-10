@@ -2,6 +2,7 @@ package student
 
 import (
 	"TrainingProgram/model"
+	"strconv"
 )
 
 type Data struct {
@@ -22,5 +23,13 @@ func GetStudentCourse(StudentID string) (Data, model.ErrNo) {
 // courseTOTCourse 函数把[]studentcourse转换成[]Tcourse
 // TODO: 转换函数
 func courseToTCourse(studentCourseList *[]model.StudentCourse) []model.TCourse {
-	return nil
+	t_course := make([]model.TCourse, len(*studentCourseList))
+	for i, v := range *studentCourseList {
+		t_course[i] = model.TCourse{
+			CourseID:  strconv.Itoa(int(v.CoursesID)),
+			Name:      v.CourseName,
+			TeacherID: strconv.Itoa(int(v.TeacherID)),
+		}
+	}
+	return t_course
 }

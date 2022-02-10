@@ -8,8 +8,10 @@ import (
 
 type StudentCourse struct {
 	gorm.Model
-	StudentID uint   `gorm:"index:idx_studentID;comment:'选课学生'"`
-	CoursesID string `gorm:"comment:'学生课程'"`
+	StudentID  uint `gorm:"index:idx_studentID;comment:'选课学生'"`
+	CoursesID  uint `gorm:"column:;comment:'学生课程'"`
+	CourseName string
+	TeacherID  uint
 }
 
 func GetStudentCourse(StudentID string) (*[]StudentCourse, ErrNo) {
