@@ -42,6 +42,9 @@ func Init() {
 		if err != nil {
 			return
 		}
+		if len(keys) == 0 {
+			return
+		}
 		util.Log().Info("begin to save student id\n")
 		for _, key := range keys {
 			courseId := strings.Split(key, ":")[0]
