@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"TrainingProgram/model"
+	"TrainingProgram/resource"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -15,7 +16,7 @@ func CurrentUser() gin.HandlerFunc {
 		if uid != nil {
 			member, err := model.GetMember(uid)
 			if err == nil {
-				c.Set("member", &member)
+				c.Set("user", &member)
 			}
 		}
 		c.Next()
@@ -25,8 +26,8 @@ func CurrentUser() gin.HandlerFunc {
 // AuthRequired 需要登录
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if member, _ := c.Get("member"); member != nil {
-			if _, ok := member.(*model.TMember); ok {
+		if member, _ := c.Get("user"); member != nil {
+			if _, ok := member.(*resource.Member); ok {
 				c.Next()
 				return
 			}
