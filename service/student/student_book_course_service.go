@@ -29,8 +29,8 @@ func Init() {
 				userIds, _ := cache.RedisClient.LRange(courseId+":user_id", 0, -1).Result()
 				// 删除redis key
 				cache.RedisClient.Del(courseId + ":user_id")
-				// TODO: 保存id到数据库
-				model.DB.Save(userIds)
+				// 保存id到数据库
+				model.AddStudentCourseInBatches(userIds, courseId)
 			}
 		}
 	}()
@@ -61,7 +61,11 @@ func Init() {
 func BookCourseInit() model.BookCourseResponse {
 	// 每次启动服务时清空上一次留在Redis中的数据
 	cache.RedisClient.FlushAll()
-	bookCourses, _ := model.GetAllCourses()
+	bookCourses, errNo := model.GetAllCourses()
+	// 如果数据库为空，则不执行下列初始化
+	if errNo != model.OK || len(bookCourses) == 0 {
+		return model.BookCourseResponse{Code: model.OK}
+	}
 	for _, course := range bookCourses {
 		courseId := strconv.Itoa(int(course.ID))
 		if course.Cap <= 0 {

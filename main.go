@@ -12,6 +12,7 @@ func main() {
 
 	// 初始化抢课相关
 	student.Init()
+	student.BookCourseInit()
 
 	// 装载路由
 	r := server.NewRouter()

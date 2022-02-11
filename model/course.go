@@ -56,8 +56,11 @@ func GetAllCourse(TeacherID string) (*[]Course, ErrNo) {
 // GetAllCourses 查询所有的课程
 func GetAllCourses() ([]Course, ErrNo) {
 	var courseList []Course
-	DB.Find(&courseList)
-	return courseList, OK
+	if err := DB.Find(&courseList).Error; err != nil {
+		return nil, UnknownError
+	} else {
+		return courseList, OK
+	}
 }
 
 func BindCourse(CourseID, TeacherID string) ErrNo {

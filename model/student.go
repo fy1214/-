@@ -2,6 +2,7 @@ package model
 
 import (
 	. "TrainingProgram/resource"
+	"TrainingProgram/util"
 	"gorm.io/gorm"
 	"strconv"
 )
@@ -33,4 +34,31 @@ func GetStudentCourse(StudentID string) (*[]StudentCourse, ErrNo) {
 		return &Courses, StudentHasCourse
 	}
 
+}
+
+// 批量插入学生课表数据
+func AddStudentCourseInBatches(studentIds []string, courseId string) ErrNo {
+	// 根据courseId查询课程名称和老师id
+	course, errNo := GetOneCourse(courseId)
+	if errNo != OK {
+		return errNo
+	}
+
+	n := len(studentIds)
+	courseStudents := make([]StudentCourse, n)
+	for i := 0; i < len(studentIds); i++ {
+		studentIdInt, _ := strconv.Atoi(studentIds[i])
+		courseStudents[i] = StudentCourse{
+			StudentID:  uint(studentIdInt),
+			CoursesID:  course.ID,
+			CourseName: course.Name,
+			TeacherID:  course.TeacherID,
+		}
+	}
+	if err := DB.CreateInBatches(courseStudents, n).Error; err != nil {
+		util.Log().Error("AddStudentCourseInBatches error: %s\n", err.Error())
+		return UnknownError
+	} else {
+		return OK
+	}
 }
