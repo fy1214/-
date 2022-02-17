@@ -4,9 +4,11 @@ import (
 	cache "TrainingProgram/cache"
 	"TrainingProgram/model"
 	"TrainingProgram/util"
+	"fmt"
 	cron "github.com/robfig/cron/v3"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type BookCourseService struct {
@@ -80,7 +82,6 @@ func BookCourseInit() model.BookCourseResponse {
 }
 
 // BookCourse 抢课函数
-// TODO: 过滤重复的抢课请求
 func (service *BookCourseService) BookCourse() model.BookCourseResponse {
 	userId := service.StudentId
 	courseId := service.CourseID
@@ -106,6 +107,13 @@ func (service *BookCourseService) BookCourse() model.BookCourseResponse {
 	}
 	if intRes, _ := strconv.Atoi(res); intRes == 1 {
 		return model.BookCourseResponse{Code: model.CourseNotAvailable}
+	}
+
+	// redis key "bc:{courseId}:{userId}"，避免短时间内的重复抢课请求
+	repeat, _ := cache.RedisClient.SetNX(fmt.Sprintf("bc:%s:%s", courseId, userId), 1, 1*time.Minute).Result()
+	// 已经请求过了
+	if !repeat {
+		return model.BookCourseResponse{Code: model.UnknownError}
 	}
 
 	leftCap, err := cache.RedisClient.HIncrBy("book_course", courseId, -1).Result()

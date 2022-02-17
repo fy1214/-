@@ -3,14 +3,12 @@ package model
 import (
 	. "TrainingProgram/resource"
 	"TrainingProgram/util"
-	"gorm.io/gorm"
 	"strconv"
 )
 
 type StudentCourse struct {
-	gorm.Model
-	StudentID  uint   `gorm:"column:student_id;"`
-	CoursesID  uint   `gorm:"column:course_id"`
+	StudentID  uint   `gorm:"column:student_id;primaryKey;autoIncrement:false"`
+	CoursesID  uint   `gorm:"column:course_id;primaryKey;autoIncrement:false"`
 	CourseName string `gorm:"column:course_name"`
 	TeacherID  uint   `gorm:"column:teacher_id"`
 }
@@ -36,7 +34,7 @@ func GetStudentCourse(StudentID string) (*[]StudentCourse, ErrNo) {
 
 }
 
-// 批量插入学生课表数据
+// AddStudentCourseInBatches 批量插入学生课表数据
 func AddStudentCourseInBatches(studentIds []string, courseId string) ErrNo {
 	// 根据courseId查询课程名称和老师id
 	course, errNo := GetOneCourse(courseId)
