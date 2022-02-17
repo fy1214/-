@@ -38,7 +38,7 @@ func convertMemberToTMember(member Member) model.TMember {
 		UserID:         strconv.FormatUint(member.UserID, 10),
 		Nickname:       member.Nickname,
 		Username:       member.Username,
-		PasswordDigest: member.Password,
+		// PasswordDigest: member.Password,
 		UserType:       member.UserType,
 	}
 }
