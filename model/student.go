@@ -7,8 +7,8 @@ import (
 )
 
 type StudentCourse struct {
-	StudentID  uint   `gorm:"column:student_id;primaryKey;autoIncrement:false"`
-	CoursesID  uint   `gorm:"column:course_id;primaryKey;autoIncrement:false"`
+	StudentID  uint   `gorm:"column:student_id;primary_key" sql:"type:INT(10) UNSIGNED NOT NULL"`
+	CoursesID  uint   `gorm:"column:course_id;primary_key" sql:"type:INT(10) UNSIGNED NOT NULL"`
 	CourseName string `gorm:"column:course_name"`
 	TeacherID  uint   `gorm:"column:teacher_id"`
 }
